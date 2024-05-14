@@ -3,8 +3,9 @@ from selenium.webdriver.common.keys import Keys
 import time
 import unittest
 from selenium.webdriver.common.by import By
+from django.test import LiveServerTestCase
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
         
@@ -19,7 +20,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # 伊迪丝听说有一个很酷的在线待办事项应用
         # 她去看了这个应用的首页
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         inputbox = self.browser.find_element(By.ID, 'id_new_item')
 
@@ -47,5 +48,5 @@ class NewVisitorTest(unittest.TestCase):
 
         self.fail('Finish the test!')
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
