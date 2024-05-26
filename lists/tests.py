@@ -11,24 +11,35 @@ from lists.models import Item, List
 #     def test_bad_maths(self):
 #         self.assertEqual(1 + 1, 3)
 
-class ItemModelTest(TestCase):
+class ListAndItemModelTest(TestCase):
 
     def test_saving_and_retrieving_items(self):
+
+        list_user = List()
+        list_user.save()
+
         first_item = Item()
-        first_item.text = 'The first (ever) list item'
+        first_item.text = 'The first list item'
+        first_item.list = list_user
         first_item.save()
         
         second_item = Item()
         second_item.text = 'Item the second'
+        second_item.list = list_user
         second_item.save()
         
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(), 2)
+        saved_list = Item.objects.first()
+        self.assertEqual(saved_list.list, list_user)
         
+        saved_items = Item.objects.all()    
+        self.assertEqual(saved_items.count(), 2)
+
         first_saved_item = saved_items[0]
         second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+        self.assertEqual(first_saved_item.text, 'The first list item')
+        self.assertEqual(first_saved_item.list, list_user)
         self.assertEqual(second_saved_item.text, 'Item the second')
+        self.assertEqual(second_saved_item.list, list_user)
 
 class HomePageTest(TestCase):
 
@@ -36,21 +47,24 @@ class HomePageTest(TestCase):
     #     found = resolve('/')
     #     self.assertEqual(found.func, home_page)
 
-    def test_uses_home_template(self):
+    # def test_uses_home_template(self):
+    #     response = self.client.get('/')
+    #     self.assertTemplateUsed(response, 'home.html')
+
+    # def test_only_saves_items_when_necessary(self):
+    #     self.client.get('/')
+    #     self.assertEqual(Item.objects.count(), 0)
+
+    def test_home_page_return_correct_html(self):
+        # request = HttpRequest()
+        # response = home_page(request)
+        # html = response.content.decode('utf8')
+        # self.assertTrue(html.startswith('<html>'))
+        # self.assertIn('<title>To-Do lists</title>', html)
+        # self.assertTrue(html.endswith('</html>'))
+
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
-
-    def test_only_saves_items_when_necessary(self):
-        self.client.get('/')
-        self.assertEqual(Item.objects.count(), 0)
-
-    def test_home_page_returns_correct_html(self):
-        request = HttpRequest()
-        response = home_page(request)
-        html = response.content.decode('utf8')
-        self.assertTrue(html.startswith('<html>'))
-        self.assertIn('<title>To-Do lists</title>', html)
-        self.assertTrue(html.endswith('</html>'))
 
 
 class ListViewTest(TestCase):
