@@ -1,0 +1,23 @@
+运行服务器
+python manage.py runserver
+
+运行测试
+python manage.py test
+
+功能测试
+python funtion_test.py
+
+创建数据库迁移
+python manage.py makemigrations
+
+
+---
+
+移动功能测试后的测试指令
+python manage.py test functional_tests
+
+只想运行单元测试
+python manage.py test lists
+
+收集静态文件
+python manage.py collectstatic --noinput
