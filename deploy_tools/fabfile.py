@@ -3,7 +3,7 @@ from fabric.api import env, local, run
 import random
 
 REPO_URL = 'https://github.com/WannaBSteve/TSDT.git'
-CONDA_ENV_PATH = '/home/lzs/miniconda3/envs/TSDT'
+CONDA_ENV_PATH = '/root/miniconda3/envs/TSDT'
 CONDA_ENV_NAME = 'TSDT'
 
 def deploy():
@@ -40,9 +40,9 @@ def _update_settings(source_folder, site_name):
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')   
 
 def _update_conda_env(source_folder):
-    if not exists(f'{CONDA_ENV_PATH}'):
+    if not exists(f'/root/miniconda3/envs/{CONDA_ENV_NAME}'):
         run(f'conda create -n {CONDA_ENV_NAME} python=3.9 -y')
-    run(f'{CONDA_ENV_PATH}/bin/pip install -r {source_folder}/requirements.txt')
+    run(f'/root/miniconda3/envs/{CONDA_ENV_NAME}/bin/pip install -r {source_folder}/requirement.txt')
 
 def _update_static_files(source_folder):
     run(f'cd {source_folder} && {CONDA_ENV_PATH}/bin/python manage.py collectstatic --noinput')
